@@ -5,7 +5,11 @@ using UnityEngine;
 public abstract class Snowman : MonoBehaviour
 {
     [SerializeField] private float health;
+    [Tooltip("How much health this snowman will lose every MeltTime seconds.\n\n" +
+        "この雪だるまがMeltTime秒ごとにどれだけの健康を失うか。")]
     [SerializeField] private float meltAmount;
+    [Tooltip("This snowman will lose MeltAmount health every MeltTime seconds.\n\n" +
+        "この雪だるまはMeltTime秒ごとにMeltAmountの体力を失います。")]
     [SerializeField] private float meltTime;
     protected float maxHealth;
     protected float meltTimerProgress;
