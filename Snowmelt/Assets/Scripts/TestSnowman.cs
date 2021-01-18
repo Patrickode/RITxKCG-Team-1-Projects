@@ -34,12 +34,12 @@ public class TestSnowman : Snowman
 
     protected override void UseAbility()
     {
-        Debug.Log("Ability used\t使用される能力");
+        Debug.Log($"{gameObject.name}: Ability used\t使用される能力");
     }
 
     protected override void Die()
     {
-        Debug.Log("I AM BECOME DIE\t私は死にます");
+        Debug.Log($"{gameObject.name}: I AM BECOME DIE\t私は死にます");
         base.Die();
     }
 }
