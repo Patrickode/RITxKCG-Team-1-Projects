@@ -587,6 +587,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1295991773}
   - component: {fileID: 1295991772}
+  - component: {fileID: 1295991774}
   m_Layer: 0
   m_Name: Create/Destroy Manager
   m_TagString: Untagged
@@ -608,11 +609,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   snowmanPreviewPrefab: {fileID: 4628364306677261305, guid: f53e4f7bf3c0102499413d1251a4c86d,
     type: 3}
-  validColor: {r: 0, g: 1, b: 0.08235294, a: 0.34901962}
   invalidColor: {r: 1, g: 0, b: 0, a: 0.34901962}
-  buildSnowmanPrefab: {fileID: 2253901102791612965, guid: 3deb6e50b03047a438301cb45ad8fa1e,
-    type: 3}
-  distanceBetweenSnowmen: 0.25
 --- !u!4 &1295991773
 Transform:
   m_ObjectHideFlags: 0
@@ -627,6 +624,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1295991774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295991771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 986d2a7e653a2d84e9d68739518a203e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildSnowmanPrefab: {fileID: 2253901102791612965, guid: 3deb6e50b03047a438301cb45ad8fa1e,
+    type: 3}
 --- !u!1 &1411417944
 GameObject:
   m_ObjectHideFlags: 0
