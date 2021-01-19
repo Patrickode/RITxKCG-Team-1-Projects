@@ -64,7 +64,7 @@ public abstract class Snowman : MonoBehaviour
         }
     }
 
-    abstract protected void UseAbility();
+    protected virtual void UseAbility() { }
 
     protected virtual void Die()
     {
