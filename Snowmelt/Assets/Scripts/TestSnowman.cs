@@ -20,8 +20,7 @@ public class TestSnowman : Snowman
         base.Update();
 
         Vector3 previousScale = transform.localScale;
-        float percentDamaged = Mathf.InverseLerp(0, maxHealth, Health);
-        transform.localScale = Vector3.Lerp(maxScale * damagedScalePercent, maxScale, percentDamaged);
+        transform.localScale = Vector3.Lerp(maxScale * damagedScalePercent, maxScale, HealthPercentage);
         transform.position -= Vector3.up * ((previousScale.y - transform.localScale.y) / 2);
 
         abilityTimer += Time.deltaTime;

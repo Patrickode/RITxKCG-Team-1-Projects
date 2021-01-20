@@ -110,6 +110,8 @@ MonoBehaviour:
   health: 100
   meltAmount: 1
   meltTime: 0.1
+  costToBuild: 100
+  minimumRefund: 20
   damagedScalePercent: 0.5
   abilityCooldown: 1
 --- !u!1001 &693967073847403064

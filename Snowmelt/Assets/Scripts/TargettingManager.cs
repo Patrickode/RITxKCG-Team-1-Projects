@@ -74,9 +74,20 @@ public class TargettingManager : MonoBehaviour
                 //プレーヤーはビルドモードであり、
                 if (ModeManager.CurrentMode == PlayerMode.Build)
                 {
-                    //And, finally, if building the snowman here would not make it sideways,
-                    //そして最後に、ここで雪だるまを建てても横向きにならない場合は、
-                    if (Vector3.Dot(Vector3.up, hitInfo.normal) > 0.4f)
+                    //If targetting a snowman, highlight it with the valid-colored preview
+                    //雪だるまをターゲットにする場合は、有効な色のプレビューでハイライトします
+                    if (hitInfo.transform.CompareTag("Snowman"))
+                    {
+                        PreviewRenderer.SetPropertyBlock(null);
+                        SnowmanPreview.transform.position = hitInfo.transform.position;
+                        SnowmanPreview.transform.localScale = Vector3.Max(
+                            hitInfo.transform.localScale * 1.1f,
+                            snowmanPreviewPrefab.transform.localScale * 1.1f
+                        );
+                    }
+                    //Otherwise, if building the snowman here would not make it sideways,
+                    //それ以外の場合、ここで雪だるまを構築しても横向きにならない場合は、
+                    else if (Vector3.Dot(Vector3.up, hitInfo.normal) > 0.4f)
                     {
                         //Spawn a snowman preview if one is not already spawned (see SnowmanPreview's get 
                         //function) and position it at the point where the raycast hit.
@@ -86,6 +97,7 @@ public class TargettingManager : MonoBehaviour
                         previewPos += hitInfo.normal * SnowmanPreview.transform.localScale.y / 2;
                         SnowmanPreview.transform.position = previewPos;
                         SnowmanPreview.transform.up = hitInfo.normal;
+                        SnowmanPreview.transform.localScale = snowmanPreviewPrefab.transform.localScale;
 
                         //Change the color of the snowman preview depending on whether the player could build
                         //a snowman here.
@@ -94,16 +106,11 @@ public class TargettingManager : MonoBehaviour
                         {
                             PreviewRenderer.SetPropertyBlock(invalidColorProp);
                         }
-                        else if (hitInfo.transform.CompareTag("Snowman")) { SnowmanPreview.SetActive(false); }
                         else { PreviewRenderer.SetPropertyBlock(null); }
                     }
                     //If building the snowman here would make it sideways, don't show the build preview.
                     ////ここでスノーマンをビルドすると横向きになる場合は、ビルドプレビューを表示しないでください。
-                    else
-                    {
-                        SnowmanPreview.transform.localScale = snowmanPreviewPrefab.transform.localScale;
-                        SnowmanPreview.SetActive(false);
-                    }
+                    else { SnowmanPreview.SetActive(false); }
                 }
                 else if (hitInfo.transform.CompareTag("Snowman"))
                 {
@@ -111,17 +118,9 @@ public class TargettingManager : MonoBehaviour
                     SnowmanPreview.transform.localScale = hitInfo.transform.localScale * 1.1f;
                     PreviewRenderer.SetPropertyBlock(invalidColorProp);
                 }
-                else
-                {
-                    SnowmanPreview.transform.localScale = snowmanPreviewPrefab.transform.localScale;
-                    SnowmanPreview.SetActive(false);
-                }
+                else { SnowmanPreview.SetActive(false); }
             }
-            else
-            {
-                SnowmanPreview.transform.localScale = snowmanPreviewPrefab.transform.localScale;
-                SnowmanPreview.SetActive(false);
-            }
+            else { SnowmanPreview.SetActive(false); }
         }
 
         //If the player clicks the primary mouse button,
