@@ -6,6 +6,7 @@ TagManager:
   tags:
   - NoBuild
   - Snowman
+  - SnowPile
   layers:
   - Default
   - TransparentFX

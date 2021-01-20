@@ -19,6 +19,7 @@ public class ModeManager : MonoBehaviour
     public static PlayerMode CurrentMode { get; private set; } = PlayerMode.None;
     public static Action<Transform> HealSnowman;
     public static Action<Transform> RefundSnowman;
+    public static Action<Transform> TakeFromSnowPile;
 
     private void Awake() { TargettingManager.TryCreateOrDestroy += OnTryCreateOrDestroy; }
     private void OnDestroy() { TargettingManager.TryCreateOrDestroy -= OnTryCreateOrDestroy; }
@@ -34,12 +35,21 @@ public class ModeManager : MonoBehaviour
     {
         switch (CurrentMode)
         {
+            case PlayerMode.None:
+                if (targetInfo.transform.CompareTag("SnowPile"))
+                {
+                    TakeFromSnowPile?.Invoke(targetInfo.transform);
+                }
+                break;
+
             case PlayerMode.Build:
                 TryBuild(targetInfo);
                 break;
+
             case PlayerMode.Destroy:
                 TryDestroy(targetInfo);
                 break;
+
             default:
                 break;
         }

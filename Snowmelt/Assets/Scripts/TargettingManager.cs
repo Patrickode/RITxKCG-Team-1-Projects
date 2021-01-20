@@ -55,20 +55,17 @@ public class TargettingManager : MonoBehaviour
 
     private void Update()
     {
-        if (ModeManager.CurrentMode != PlayerMode.None)
-        {
-            //Get the mouse's position and raycast from the camera in the direction of the mouse's position.
-            //マウスの位置を取得し、カメラからマウスの位置の方向にレイキャストします。
-            Ray rayFromMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //Get the mouse's position and raycast from the camera in the direction of the mouse's position.
+        //マウスの位置を取得し、カメラからマウスの位置の方向にレイキャストします。
+        Ray rayFromMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            //If the raycast hits something,
-            //レイキャストが何かに当たった場合、
-            if (Physics.Raycast(rayFromMouse, out hitInfo, 1000))
+        //If the raycast hits something,
+        //レイキャストが何かに当たった場合、
+        if (Physics.Raycast(rayFromMouse, out hitInfo, 1000))
+        {
+            switch (ModeManager.CurrentMode)
             {
-                //the player is in build mode,
-                //プレーヤーはビルドモードであり、
-                if (ModeManager.CurrentMode == PlayerMode.Build)
-                {
+                case PlayerMode.Build:
                     //If targetting a snowman, highlight it with the valid-colored preview
                     //雪だるまをターゲットにする場合は、有効な色のプレビューでハイライトします
                     if (hitInfo.transform.CompareTag("Snowman"))
@@ -109,29 +106,35 @@ public class TargettingManager : MonoBehaviour
                     //If building the snowman here would make it sideways, don't show the build preview.
                     ////ここでスノーマンをビルドすると横向きになる場合は、ビルドプレビューを表示しないでください。
                     else { SnowmanPreview.SetActive(false); }
-                }
-                //If the player is in destroy mode and targeting a snowman, highlight that snowman with the 
-                //invalid-colored preview
-                //プレイヤーが破壊モードで雪だるまをターゲットにしている場合は、
-                //無効な色のプレビューでその雪だるまを強調表示します
-                else if (ModeManager.CurrentMode == PlayerMode.Destroy && hitInfo.transform.CompareTag("Snowman"))
-                {
-                    SnowmanPreview.transform.position = hitInfo.transform.position;
-                    SnowmanPreview.transform.localScale = hitInfo.transform.localScale * 1.1f;
-                    PreviewRenderer.SetPropertyBlock(invalidColorProp);
-                }
-                else { SnowmanPreview.SetActive(false); }
-            }
-            else { SnowmanPreview.SetActive(false); }
+                    break;
 
-            //If the player clicks the primary mouse button, try to create or destroy a snowman.
-            //プレイヤーがマウスの主ボタンをクリックした場合は、雪だるまを作成または破壊してみてください。
-            if (Input.GetMouseButtonDown(0))
-            {
-                TryCreateOrDestroy?.Invoke(hitInfo);
-                SnowmanPreview.SetActive(false);
+                case PlayerMode.Destroy:
+                    //If the player is targeting a snowman, highlight that snowman with the invalid-colored 
+                    //preview
+                    //プレイヤーが雪だるまをターゲットにしている場合は、無効な色のプレビューでその雪だるまを強調表示します
+                    if (hitInfo.transform.CompareTag("Snowman"))
+                    {
+                        SnowmanPreview.transform.position = hitInfo.transform.position;
+                        SnowmanPreview.transform.localScale = hitInfo.transform.localScale * 1.1f;
+                        PreviewRenderer.SetPropertyBlock(invalidColorProp);
+                    }
+                    else { SnowmanPreview.SetActive(false); }
+                    break;
+
+                case PlayerMode.None:
+                default:
+                    SnowmanPreview.SetActive(false);
+                    break;
             }
         }
         else { SnowmanPreview.SetActive(false); }
+
+        //If the player clicks the primary mouse button, try to create or destroy a snowman.
+        //プレイヤーがマウスの主ボタンをクリックした場合は、雪だるまを作成または破壊してみてください。
+        if (ModeManager.CurrentMode != PlayerMode.None)
+        {
+            if (Input.GetMouseButtonDown(0)) { TryCreateOrDestroy?.Invoke(hitInfo); }
+        }
+        else if (Input.GetMouseButton(0)) { TryCreateOrDestroy?.Invoke(hitInfo); }
     }
 }

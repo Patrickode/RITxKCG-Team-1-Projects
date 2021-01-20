@@ -119,7 +119,7 @@ public abstract class Snowman : MonoBehaviour
         if (transform.Equals(snowmanRefunded))
         {
             float refundAmount = Mathf.Lerp(minimumRefund, costToBuild, HealthPercentage);
-            SnowManager.TrySpendSnow(Mathf.CeilToInt(-refundAmount));
+            SnowManager.TrySpendSnow(-Mathf.CeilToInt(refundAmount));
             Die();
         }
     }
