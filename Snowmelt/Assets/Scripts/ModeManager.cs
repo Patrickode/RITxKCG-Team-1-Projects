@@ -5,6 +5,7 @@ using UnityEngine;
 
 public enum PlayerMode
 {
+    None,
     Build,
     Destroy
 }
@@ -15,12 +16,19 @@ public class ModeManager : MonoBehaviour
         "雪だるまを作るときに使用するプレハブ。")]
     [SerializeField] private Snowman buildSnowmanPrefab = null;
 
-    public static PlayerMode CurrentMode { get; private set; } = PlayerMode.Build;
+    public static PlayerMode CurrentMode { get; private set; } = PlayerMode.None;
     public static Action<Transform> HealSnowman;
     public static Action<Transform> RefundSnowman;
 
     private void Awake() { TargettingManager.TryCreateOrDestroy += OnTryCreateOrDestroy; }
     private void OnDestroy() { TargettingManager.TryCreateOrDestroy -= OnTryCreateOrDestroy; }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Q)) { CurrentMode = PlayerMode.Build; }
+        else if (Input.GetKeyDown(KeyCode.E)) { CurrentMode = PlayerMode.Destroy; }
+        else if (Input.GetMouseButton(1)) { CurrentMode = PlayerMode.None; }
+    }
 
     private void OnTryCreateOrDestroy(RaycastHit targetInfo)
     {
@@ -35,12 +43,8 @@ public class ModeManager : MonoBehaviour
             default:
                 break;
         }
-    }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q)) { CurrentMode = PlayerMode.Build; }
-        else if (Input.GetKeyDown(KeyCode.E)) { CurrentMode = PlayerMode.Destroy; }
+        CurrentMode = PlayerMode.None;
     }
 
     private void TryBuild(RaycastHit targetInfo)
