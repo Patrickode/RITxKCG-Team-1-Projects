@@ -16,11 +16,6 @@ public class TargettingManager : MonoBehaviour
     /// 現在使用されているプレビューオブジェクト。 現在プレビューが使用されていない場合はnull。
     /// </summary>
     private GameObject activePreview = null;
-    /// <summary>
-    /// Whether this script is prepared to create or destroy.<br/>
-    /// このスクリプトが作成または破棄する準備ができているかどうか。
-    /// </summary>
-    private bool actionPrepared = false;
 
     public static Action<RaycastHit> TryCreateOrDestroy;
     private RaycastHit hitInfo;
@@ -60,23 +55,31 @@ public class TargettingManager : MonoBehaviour
 
     private void Update()
     {
-        if (actionPrepared)
-        {
-            //Get the mouse's position and raycast from the camera in the direction of the mouse's position.
-            //マウスの位置を取得し、カメラからマウスの位置の方向にレイキャストします。
-            Ray rayFromMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //Get the mouse's position and raycast from the camera in the direction of the mouse's position.
+        //マウスの位置を取得し、カメラからマウスの位置の方向にレイキャストします。
+        Ray rayFromMouse = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            //If the raycast hits something,
-            //レイキャストが何かに当たった場合、
-            if (Physics.Raycast(rayFromMouse, out hitInfo, 1000))
+        //If the raycast hits something,
+        //レイキャストが何かに当たった場合、
+        if (Physics.Raycast(rayFromMouse, out hitInfo, 1000))
+        {
+            switch (ModeManager.CurrentMode)
             {
-                //the player is in build mode,
-                //プレーヤーはビルドモードであり、
-                if (ModeManager.CurrentMode == PlayerMode.Build)
-                {
-                    //And, finally, if building the snowman here would not make it sideways,
-                    //そして最後に、ここで雪だるまを建てても横向きにならない場合は、
-                    if (Vector3.Dot(Vector3.up, hitInfo.normal) > 0.4f)
+                case PlayerMode.Build:
+                    //If targetting a snowman, highlight it with the valid-colored preview
+                    //雪だるまをターゲットにする場合は、有効な色のプレビューでハイライトします
+                    if (hitInfo.transform.CompareTag("Snowman"))
+                    {
+                        PreviewRenderer.SetPropertyBlock(null);
+                        SnowmanPreview.transform.position = hitInfo.transform.position;
+                        SnowmanPreview.transform.localScale = Vector3.Max(
+                            hitInfo.transform.localScale * 1.1f,
+                            snowmanPreviewPrefab.transform.localScale * 1.1f
+                        );
+                    }
+                    //Otherwise, if building the snowman here would not make it sideways,
+                    //それ以外の場合、ここで雪だるまを構築しても横向きにならない場合は、
+                    else if (Vector3.Dot(Vector3.up, hitInfo.normal) > 0.4f)
                     {
                         //Spawn a snowman preview if one is not already spawned (see SnowmanPreview's get 
                         //function) and position it at the point where the raycast hit.
@@ -86,6 +89,7 @@ public class TargettingManager : MonoBehaviour
                         previewPos += hitInfo.normal * SnowmanPreview.transform.localScale.y / 2;
                         SnowmanPreview.transform.position = previewPos;
                         SnowmanPreview.transform.up = hitInfo.normal;
+                        SnowmanPreview.transform.localScale = snowmanPreviewPrefab.transform.localScale;
 
                         //Change the color of the snowman preview depending on whether the player could build
                         //a snowman here.
@@ -94,59 +98,43 @@ public class TargettingManager : MonoBehaviour
                         {
                             PreviewRenderer.SetPropertyBlock(invalidColorProp);
                         }
-                        else if (hitInfo.transform.CompareTag("Snowman")) { SnowmanPreview.SetActive(false); }
+                        //Setting the MaterialPropertyBlock of an object to null removes all parameter overrides.
+                        //オブジェクトのMaterialPropertyBlockをnullに設定すると、
+                        //すべてのパラメータオーバーライドが削除されます。
                         else { PreviewRenderer.SetPropertyBlock(null); }
                     }
                     //If building the snowman here would make it sideways, don't show the build preview.
                     ////ここでスノーマンをビルドすると横向きになる場合は、ビルドプレビューを表示しないでください。
-                    else
-                    {
-                        SnowmanPreview.transform.localScale = snowmanPreviewPrefab.transform.localScale;
-                        SnowmanPreview.SetActive(false);
-                    }
-                }
-                else if (hitInfo.transform.CompareTag("Snowman"))
-                {
-                    SnowmanPreview.transform.position = hitInfo.transform.position;
-                    SnowmanPreview.transform.localScale = hitInfo.transform.localScale * 1.1f;
-                    PreviewRenderer.SetPropertyBlock(invalidColorProp);
-                }
-                else
-                {
-                    SnowmanPreview.transform.localScale = snowmanPreviewPrefab.transform.localScale;
-                    SnowmanPreview.SetActive(false);
-                }
-            }
-            else
-            {
-                SnowmanPreview.transform.localScale = snowmanPreviewPrefab.transform.localScale;
-                SnowmanPreview.SetActive(false);
-            }
-        }
+                    else { SnowmanPreview.SetActive(false); }
+                    break;
 
-        //If the player clicks the primary mouse button,
-        //プレーヤーがマウスの主ボタンをクリックした場合、
-        if (Input.GetMouseButtonDown(0))
-        {
-            //and an action is prepared,
-            //そしてアクションが準備されます、
-            if (actionPrepared)
-            {
-                TryCreateOrDestroy?.Invoke(hitInfo);
-                SnowmanPreview.SetActive(false);
-                actionPrepared = false;
-            }
-            else
-            {
-                actionPrepared = true;
+                case PlayerMode.Destroy:
+                    //If the player is targeting a snowman, highlight that snowman with the invalid-colored 
+                    //preview
+                    //プレイヤーが雪だるまをターゲットにしている場合は、無効な色のプレビューでその雪だるまを強調表示します
+                    if (hitInfo.transform.CompareTag("Snowman"))
+                    {
+                        SnowmanPreview.transform.position = hitInfo.transform.position;
+                        SnowmanPreview.transform.localScale = hitInfo.transform.localScale * 1.1f;
+                        PreviewRenderer.SetPropertyBlock(invalidColorProp);
+                    }
+                    else { SnowmanPreview.SetActive(false); }
+                    break;
+
+                case PlayerMode.None:
+                default:
+                    SnowmanPreview.SetActive(false);
+                    break;
             }
         }
-        //Click secondary (right) mouse button to cancel.
-        //キャンセルするには、マウスの2番目（右）ボタンをクリックします。
-        else if (Input.GetMouseButtonDown(1))
+        else { SnowmanPreview.SetActive(false); }
+
+        //If the player clicks the primary mouse button, try to create or destroy a snowman.
+        //プレイヤーがマウスの主ボタンをクリックした場合は、雪だるまを作成または破壊してみてください。
+        if (ModeManager.CurrentMode != PlayerMode.None)
         {
-            actionPrepared = false;
-            SnowmanPreview.SetActive(false);
+            if (Input.GetMouseButtonDown(0)) { TryCreateOrDestroy?.Invoke(hitInfo); }
         }
+        else if (Input.GetMouseButton(0)) { TryCreateOrDestroy?.Invoke(hitInfo); }
     }
 }
