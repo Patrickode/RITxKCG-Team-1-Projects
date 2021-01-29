@@ -121,6 +121,65 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &192577270
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 192577271}
+  - component: {fileID: 192577273}
+  - component: {fileID: 192577272}
+  m_Layer: 2
+  m_Name: TraySensor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &192577271
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192577270}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.5, y: 0, z: -1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 563911925}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &192577272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192577270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b609aa3a575566499bb61b71b9efe07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PhotoDroppedSignal: {fileID: 11400000, guid: 468fb7168b2d92449ac8fbd69f3ca803, type: 2}
+  TrayId: 1
+--- !u!65 &192577273
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192577270}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.7, y: 1, z: 2.8}
+  m_Center: {x: 0, y: 0.14, z: 0}
 --- !u!1 &287236425
 GameObject:
   m_ObjectHideFlags: 0
@@ -1743,7 +1802,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.66, y: 0.77, z: -0.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 192577271}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1770,6 +1830,7 @@ GameObject:
   m_Component:
   - component: {fileID: 586303947}
   - component: {fileID: 586303948}
+  - component: {fileID: 586303949}
   m_Layer: 2
   m_Name: TraySensor
   m_TagString: Untagged
@@ -1804,6 +1865,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.7, y: 1, z: 2.8}
   m_Center: {x: 0, y: 0.14, z: 0}
+--- !u!114 &586303949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586303946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b609aa3a575566499bb61b71b9efe07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PhotoDroppedSignal: {fileID: 11400000, guid: 468fb7168b2d92449ac8fbd69f3ca803, type: 2}
+  TrayId: 0
 --- !u!1 &597403178
 GameObject:
   m_ObjectHideFlags: 0
@@ -3181,6 +3256,7 @@ MonoBehaviour:
   MemoryParent: {fileID: 1482826174}
   MemoryPrefab: {fileID: 6161418469769383873, guid: b037c95c3d13b9745942371e5d52a949,
     type: 3}
+  PhotoDroppedSignal: {fileID: 0}
 --- !u!43 &1805711002
 Mesh:
   m_ObjectHideFlags: 0
