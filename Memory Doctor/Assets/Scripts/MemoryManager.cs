@@ -16,6 +16,7 @@ public class MemoryManager : MonoBehaviour
     void Awake () {
         // Temporary, this data will come from the previous scene
         PlayerPrefs.SetString("MemoryStrings", "1,2,3");
+        PlayerPrefs.SetString("MemoriesToRemove", "3");
         TrayPhotos = new List<HashSet<int>> {
             new HashSet<int>(), // The first and the main memory tray
             new HashSet<int>() // Second or the removed list
@@ -36,6 +37,20 @@ public class MemoryManager : MonoBehaviour
             memory.GetComponent<MemoryComponent>().Initialize(MemoryCollection[memoryId]);
             // TODO: Fix for vertical rows
             spawnPosition -= new Vector3(1.15f,0,0);
+        }
+    }
+
+    public void checkWinCondition () {
+        bool areMemoriesCorrect = true;
+        string memoryIdString = PlayerPrefs.GetString("MemoriesToRemove");
+        int [] memoryIds = memoryIdString.Split(',').Select(int.Parse).ToArray();
+        if(memoryIds.Length != TrayPhotos[1].Count) {
+            areMemoriesCorrect = false;
+        }
+        foreach (int trayItem in TrayPhotos[1]) {
+            if(!memoryIds.Contains(trayItem)) {
+                areMemoriesCorrect = false;
+            }
         }
     }
 
