@@ -3256,14 +3256,14 @@ MonoBehaviour:
   MemoryParent: {fileID: 1482826174}
   MemoryPrefab: {fileID: 6161418469769383873, guid: b037c95c3d13b9745942371e5d52a949,
     type: 3}
-  PhotoDroppedSignal: {fileID: 0}
+  PhotoDroppedSignal: {fileID: 11400000, guid: 468fb7168b2d92449ac8fbd69f3ca803, type: 2}
 --- !u!43 &1805711002
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-10004
+  m_Name: pb_Mesh34496
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BadWedding
   m_EditorClassIdentifier: 
   memoryId: 0
-  memoryText: 
+  memoryText: Wedding
   photoTexture: {fileID: 0}

@@ -57,4 +57,6 @@ public class UIMethods : MonoBehaviour
     /// <paramref name="objectToSet"/>をアクティブにすべきか？
     /// </param>
     public void SetObjectActive(GameObject objectToSet, bool isActive) { objectToSet.SetActive(isActive); }
+
+    public void SetSceneState(int state) { SceneStateManager.SetStateWithInt(state); }
 }
