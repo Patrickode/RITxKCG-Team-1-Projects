@@ -13,7 +13,7 @@ public class MemoryManager : MonoBehaviour
     public Signal ScreenChangeSignal;
     public Signal SurgeryFinishedSignal;
 
-    List<HashSet<int>> TrayPhotos;
+    HashSet<int> DiscardedPhotos;
     List<int> unpleasantMemories;
     List<int> pleasantMemories;
     List<int> mostUnpleasantMemory;
@@ -24,10 +24,7 @@ public class MemoryManager : MonoBehaviour
         PlayerPrefs.SetString("UnpleasantMemories", "1,2");
         PlayerPrefs.SetString("PleasantMemories", "3,4");
         PlayerPrefs.SetString("MostUnpleasantMemory", "5");
-        TrayPhotos = new List<HashSet<int>> {
-            new HashSet<int>(), // The first and the main memory tray
-            new HashSet<int>() // Second or the removed list
-        };
+        DiscardedPhotos = new HashSet<int>();
         PhotoDroppedSignal.addListener(OnPhotoTrayChange);
     }
     void Start() {
@@ -59,7 +56,7 @@ public class MemoryManager : MonoBehaviour
         string grade = "A";
         int patientRemarkIndex = 0;
 
-        foreach(int trayItem in TrayPhotos[1]) {
+        foreach(int trayItem in DiscardedPhotos) {
             Debug.Log(trayItem);
             if(mostUnpleasantMemory.Contains(trayItem)) {
                 mostUnpleasantMemoryCount++;
@@ -72,7 +69,7 @@ public class MemoryManager : MonoBehaviour
 
         Debug.Log(mostUnpleasantMemoryCount);
         Debug.Log(pleasantMemoryCount);
-        Debug.Log(TrayPhotos[1].Count);
+        Debug.Log(DiscardedPhotos.Count);
 
         if(mostUnpleasantMemoryCount == mostUnpleasantMemory.Count 
             && pleasantMemoryCount == 0) {
@@ -86,14 +83,14 @@ public class MemoryManager : MonoBehaviour
                 patientRemarkIndex = 2;
             }
         } else if (mostUnpleasantMemoryCount == 0) {
-            if(TrayPhotos[1].Count == pleasantMemoryCount) {
+            if(DiscardedPhotos.Count == pleasantMemoryCount) {
                 grade = "D"; // grade d
                 patientRemarkIndex = 5;
-            } else if (pleasantMemoryCount < TrayPhotos[1].Count) {
+            } else if (pleasantMemoryCount < DiscardedPhotos.Count) {
                 grade = "C"; // grade c
                 patientRemarkIndex = 3;
             }
-        } else if (TrayPhotos[1].Count == 0) {
+        } else if (DiscardedPhotos.Count == 0) {
             grade = "D"; // grade d
             patientRemarkIndex = 4;
         } else {
@@ -112,12 +109,14 @@ public class MemoryManager : MonoBehaviour
     }
 
     void OnPhotoTrayChange (SignalData data) {
-        int trayId = data.get<int>("TrayId");
+        bool AddedOrRemoved = data.get<bool>("AddedOrRemoved");
         int memoryId = data.get<int>("MemoryId");
-        int otherTrayId = 1 - trayId;
-        TrayPhotos[trayId].Add(memoryId);
-        TrayPhotos[otherTrayId].Remove(memoryId);
-        Debug.Log("Removed photo " +memoryId + " from tray: "+otherTrayId + " and placed in tray: " +trayId);
-
+        if(AddedOrRemoved) {
+            DiscardedPhotos.Add(memoryId);
+            Debug.Log("Memory "+memoryId.ToString() + " Added to tray");
+        } else {
+            DiscardedPhotos.Remove(memoryId);
+            Debug.Log("Memory "+memoryId.ToString() + " removed from tray");
+        }
     }
 }
