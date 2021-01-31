@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: Wedding
   m_EditorClassIdentifier: 
   memoryId: 1
-  memoryText: Wedding memory
+  memoryText:
+    en: A nice wedding
+    jp: "\u7D20\u6575\u306A\u7D50\u5A5A\u5F0F "
   photoTexture: {fileID: 2800000, guid: 618713aac35c1ca419aa0f3330cde62f, type: 3}

@@ -12,8 +12,16 @@ public class ScreenManager : MonoBehaviour
     public Signal ScreenChangeSignal;
     GameObject currentScreen;
 
-    public void start() {
+    void Start() {
+        InitializeScreenState();
         ScreenChangeSignal.addListener(onScreenChange);
+    }
+
+    void InitializeScreenState () {
+        currentScreen = screens[0];
+        for (int i = 1; i < screens.Length; i++) {
+            screens[i].SetActive(false);
+        }
     }
 
     public void switchScreen(int screenIndex) {
@@ -27,6 +35,7 @@ public class ScreenManager : MonoBehaviour
     void onScreenChange (SignalData data) {
         int screenIndex = data.get<int>("ScreenIndex");
         switchScreen(screenIndex);
+        // Passing additional data for screens
     }
 
 }

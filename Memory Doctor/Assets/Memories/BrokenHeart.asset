@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b467555598abb54e908901cb81ade91, type: 3}
-  m_Name: ShintoBride
+  m_Name: BrokenHeart
   m_EditorClassIdentifier: 
-  memoryId: 2
+  memoryId: 5
   memoryText:
-    en: A shinto bride
-    jp: "\u795E\u9053\u306E\u82B1\u5AC1 "
-  photoTexture: {fileID: 2800000, guid: c2d3f58760ee28744848faf17f9f3ac6, type: 3}
+    en: A broken heart
+    jp: "\u5931\u604B  "
+  photoTexture: {fileID: 2800000, guid: be9813f13e2c07d44af54c08887bb225, type: 3}

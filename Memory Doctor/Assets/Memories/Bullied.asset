@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b467555598abb54e908901cb81ade91, type: 3}
-  m_Name: ShintoBride
+  m_Name: Bullied
   m_EditorClassIdentifier: 
-  memoryId: 2
+  memoryId: 4
   memoryText:
-    en: A shinto bride
-    jp: "\u795E\u9053\u306E\u82B1\u5AC1 "
-  photoTexture: {fileID: 2800000, guid: c2d3f58760ee28744848faf17f9f3ac6, type: 3}
+    en: Bullied
+    jp: "\u3044\u3058\u3081\u3092\u53D7\u3051\u3066\u3044\u308B"
+  photoTexture: {fileID: 2800000, guid: 47610b6d2dcfa2843a96e634bacf14b1, type: 3}

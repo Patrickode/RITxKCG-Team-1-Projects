@@ -9,11 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b467555598abb54e908901cb81ade91, type: 3}
-  m_Name: ShintoBride
+  m_Script: {fileID: 11500000, guid: d083fd11002f9854a8d23e241a58fe04, type: 3}
+  m_Name: SurgeryFinishedSignal
   m_EditorClassIdentifier: 
-  memoryId: 2
-  memoryText:
-    en: A shinto bride
-    jp: "\u795E\u9053\u306E\u82B1\u5AC1 "
-  photoTexture: {fileID: 2800000, guid: c2d3f58760ee28744848faf17f9f3ac6, type: 3}
