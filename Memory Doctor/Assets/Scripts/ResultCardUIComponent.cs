@@ -9,7 +9,9 @@ public class ResultCardUIComponent : MonoBehaviour {
     public TextMeshProUGUI [] MemoryResults;
     public Image [] CrossImages;
     public TextMeshProUGUI DisclaimerText;
-    public TextMeshProUGUI Grade;
+    public Image Grade;
+
+    public Sprite [] GradeSrites;
 
     public Signal SurgeryFinishedSignal;
 
@@ -21,13 +23,13 @@ public class ResultCardUIComponent : MonoBehaviour {
     public void onSurgeryFinished (SignalData data) {
         Dictionary<string, bool> results = data.get<Dictionary<string, bool>>("Results");
         int patientRemarkIndex = data.get<int>("PatientRemarkIndex");
-        string grade = data.get<string>("Grade");
+        int grade = data.get<int>("Grade");
         //  for(int i = 0 ; i < MemoryResults.Length; i++) {
         //     MemoryResults[i].text = results.ElementAt(i).Key;
         //     CrossImages[i].gameObject.SetActive(results.ElementAt(i).Value);
         // }
         DisclaimerText.text = constants.PatientRemarks[patientRemarkIndex].ToStringNewLine();
-        Grade.text = grade;
+        Grade.sprite = GradeSrites[grade];
     }
 
 }
